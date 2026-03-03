@@ -1,0 +1,1 @@
+export const GET_ALL_AIRPORTS = 'GET_ALL_AIRPORTS'

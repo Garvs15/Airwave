@@ -1,0 +1,33 @@
+{
+  "name": "bookingserver",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx nodemon src/index",
+    "build": "yarn install && npx sequelize db:migrate --config src/config/config.js --migrations-path src/migrations"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.13.6",
+    "body-parser": "^1.20.2",
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "http-status-codes": "^2.3.0",
+    "ioredis": "^5.4.1",
+    "mysql2": "^3.11.0",
+    "node-cron": "^3.0.3",
+    "node-schedule": "^2.1.1",
+    "nodemailer": "^6.10.1",
+    "nodemon": "^3.1.4",
+    "razorpay": "^2.9.4",
+    "sequelize": "^6.37.3",
+    "sequelize-cli": "^6.6.2",
+    "stripe": "^16.8.0"
+  }
+}

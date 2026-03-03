@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@media screen and (max-width: 640px) {
+
+    .search-flight > div:nth-child(1){
+        width: 100%;
+    }
+    .search-flight > div:nth-child(2){
+        width: 48%;
+    }
+    .search-flight > div:nth-child(3){
+        width: 48%;
+    }
+    .search-flight > div:nth-child(4){
+        width: 48%;
+    }
+    .search-flight > div:nth-child(5){
+        width: 48%;
+    }
+
+    .search-flight-main {
+        width: 80% !important
+    }
+    
+    .intro{
+        display: none;
+    }
+}
+
+@media screen and (max-width: 490px) {
+
+    .search-flight > div:nth-child(1){
+        width: 100%;
+    }
+    .search-flight > div:nth-child(2){
+        width: 100%;
+    }
+    .search-flight > div:nth-child(3){
+        width: 100%;
+    }
+    .search-flight > div:nth-child(4){
+        width: 100%;
+    }
+    .search-flight > div:nth-child(5){
+        width: 100%;
+    }
+    
+    .intro{
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .search-flight-main{
+        width: 96%;
+    }
+}
+
+@media screen and (max-width: 310px) {
+    .citySelect{
+        flex-direction: column;
+    }
+}
+
+.otp-container {
+    display: flex;
+    gap: 10px; /* Adjust gap between OTP inputs */
+    justify-content: center;
+  }
+  
+  .otp-input {
+    border-radius: 8px;
+    background-color: #F7FBFF;
+    height: 40px;
+    width: 40px; /* Adjust width if necessary */
+    text-align: center;
+  }
+  

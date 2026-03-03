@@ -1,0 +1,87 @@
+version: "3.8"
+
+services:
+  searchserver:
+    build:
+      context: server/ # Adjust the path to your backend1 Dockerfile
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./server:/usr/src/app # Mount local directory to the container
+      - /usr/src/app/node_modules # Prevents overwriting node_modules in container
+    command: sh -c "
+      yarn install &&
+      npx sequelize db:migrate --config src/config/config.js --migrations-path src/migrations &&
+      node checkAndSeed.js &&
+      yarn start
+      "
+    env_file:
+      - server/.env
+    depends_on:
+      - db
+      - redis # Add Redis dependency
+
+  bookingserver:
+    build:
+      context: bookingServer/ # Adjust the path to your backend2 Dockerfile
+    ports:
+      - "4001:4001"
+    volumes:
+      - ./bookingServer:/usr/src/app # Mount local directory to the container
+      - /usr/src/app/node_modules # Prevents overwriting node_modules in container
+    command: sh -c "yarn install && npx sequelize db:migrate --config src/config/config.js --migrations-path src/migrations && yarn start"
+    env_file:
+      - bookingServer/.env
+    depends_on:
+      - db
+      - redis # Add Redis dependency
+
+  authserver:
+    build:
+      context: authServer/ # Adjust the path to your backend3 Dockerfile
+    ports:
+      - "4002:4002"
+    volumes:
+      - ./authServer:/usr/src/app # Mount local directory to the container
+      - /usr/src/app/node_modules # Prevents overwriting node_modules in container
+    command: sh -c "yarn install && npx sequelize db:migrate --config src/config/config.js --migrations-path src/migrations && yarn start"
+    env_file:
+      - authServer/.env
+    depends_on:
+      - db
+      - redis # Add Redis dependency
+
+  frontend:
+    build:
+      context: client/ # Adjust the path to your frontend Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/usr/src/app # Mount local directory to the container
+      - /usr/src/app/node_modules # Prevents overwriting node_modules in container
+    command: sh -c "yarn install && yarn start"
+    env_file:
+      - client/.env
+    depends_on:
+      - searchserver
+      - bookingserver
+      - authserver
+
+  db:
+    image: mysql:8.0 # Using a version known to support ARM architecture
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: Himanshu@0422
+      MYSQL_DATABASE: Flights_Search_DB
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./init:/docker-entrypoint-initdb.d
+
+  redis: # Redis service
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+volumes:
+  db_data:
