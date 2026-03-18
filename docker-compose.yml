@@ -72,7 +72,7 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: Himanshu@0422
+      MYSQL_ROOT_PASSWORD: Garv#2004
       MYSQL_DATABASE: Flights_Search_DB
     volumes:
       - db_data:/var/lib/mysql
