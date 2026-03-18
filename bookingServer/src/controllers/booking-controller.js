@@ -2,20 +2,20 @@ const { StatusCodes } = require('http-status-codes');
 const BookingService = require('../services/booking-service');
 const BookedFlightController = require('./bookedFlight-controller');
 const { scheduleBookingStatusUpdate } = require('../services/scheduler');
-const transporter = require('../config/transporter');
+// const transporter = require('../config/transporter');
 const { sequelize } = require('../models/index');
 
 const bookingService = new BookingService();
 const bookedFlightController = new BookedFlightController();
 
 class BookingController {
-    constructor() {}
+    constructor() { }
 
     async create(req, res) {
         const transaction = await sequelize.transaction(); // Initialize the transaction
         try {
             const { bookingData, email, passengersData } = req.body;
-    
+
             if (!bookingData || !email || !passengersData) {
                 return res.status(StatusCodes.BAD_REQUEST).json({
                     message: 'Missing required fields',
@@ -24,9 +24,9 @@ class BookingController {
                     data: {}
                 });
             }
-    
+
             const { flightId, bookedSeats, bookingDate, returnFlightId, returnBookingDate } = bookingData;
-    
+
             if (!flightId || bookedSeats <= 0 || !bookingDate) {
                 return res.status(StatusCodes.BAD_REQUEST).json({
                     message: 'Invalid booking data',
@@ -35,13 +35,13 @@ class BookingController {
                     data: {}
                 });
             }
-    
+
             const bookingDetails = {
                 flightId,
                 noOfSeats: bookedSeats,
                 bookingDate
             };
-    
+
             const returnBookingDetails = returnFlightId
                 ? {
                     flightId: returnFlightId,
@@ -49,28 +49,28 @@ class BookingController {
                     bookingDate: returnBookingDate
                 }
                 : null;
-    
+
             const bookedFlight = await bookedFlightController.create(bookingDetails, transaction); // Pass transaction
             let returnBookedFlight;
             if (returnBookingDetails) {
                 returnBookedFlight = await bookedFlightController.create(returnBookingDetails, transaction); // Pass transaction
             }
-    
+
             const finalBookingData = {
                 ...bookingData,
                 bookedFlightId: bookedFlight.id,
                 ...(returnBookingDetails && { returnBookedFlightId: returnBookedFlight.id })
             };
-    
+
             const response = await bookingService.createBooking(finalBookingData, passengersData, transaction); // Pass transaction
             scheduleBookingStatusUpdate(response.booking.id, response.booking.createdAt);
-    
-            await transporter.sendMail({
-                to: email,
-                subject: 'Booking Successful',
-                text: 'Your booking is successful. Please complete the payment process within 30 minutes to avoid rejection.'
-            });
-    
+
+            // await transporter.sendMail({
+            //     to: email,
+            //     subject: 'Booking Successful',
+            //     text: 'Your booking is successful. Please complete the payment process within 30 minutes to avoid rejection.'
+            // });
+
             await transaction.commit(); // Commit transaction
             return res.status(StatusCodes.OK).json({
                 message: 'Successfully completed booking',
@@ -88,7 +88,7 @@ class BookingController {
                 data: {}
             });
         }
-    }    
+    }
 
     async getBookings(req, res) {
         try {
