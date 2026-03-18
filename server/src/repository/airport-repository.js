@@ -12,32 +12,32 @@ class AirportRepository {
             console.error('Error in create airport repository:', error);
             throw new Error('Failed to create airport in the database');
         }
-    }    
+    }
 
     // Method to fetch an airport by city
     async get(city) {
         try {
             const cachedAirport = await redis.get(`airport:city:${city}`);
-            
+
             if (cachedAirport) {
                 console.log('Serving airport from cache');
                 return JSON.parse(cachedAirport);
             }
-    
+
             const airport = await Airport.findOne({ where: { city } });
 
             if (!airport) {
                 console.warn('Airport not found for city:', city);
                 return null;
             }
-    
+
             await redis.set(`airport:city:${city}`, JSON.stringify(airport), 'EX', 3600);
             return airport;
         } catch (error) {
             console.error('Error during fetching airport in repository layer:', error);
             throw new Error('Failed to fetch airport from the database');
         }
-    }    
+    }
 
     // Method to fetch all airports
     async getAll() {
@@ -50,6 +50,7 @@ class AirportRepository {
             }
 
             const airports = await Airport.findAll();
+            console.log(airports, 'adsda')
 
             if (airports) {
                 await redis.set('airports:all', JSON.stringify(airports), 'EX', 3600);
