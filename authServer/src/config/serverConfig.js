@@ -18,6 +18,7 @@ module.exports = {
     DEV_DB_PASSWORD: process.env.DEV_DB_PASSWORD,
     DEV_DB_HOST: process.env.DEV_DB_HOST,
     DEV_DB_DATABASE: process.env.DEV_DB_DATABASE,
+    DEV_DB_PORT: process.env.DEV_DB_PORT,
     DB_SSL_CA: process.env.DB_SSL_CA,
     REDIS_PASS: process.env.REDIS_PASS,
     REDIS_HOST: process.env.REDIS_HOST,
