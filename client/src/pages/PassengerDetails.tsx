@@ -115,6 +115,7 @@ const PassengerDetails = () => {
     }
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const throttledHandleSubmit = useCallback(
     throttle(() => handleSubmit(), 2000),
     [handleSubmit]

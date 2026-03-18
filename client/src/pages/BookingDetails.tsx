@@ -16,13 +16,6 @@ const BookingDetails = () => {
   const user = useSelector((state: RootState) => state.user);
   const { processPayment } = usePayment();
 
-  const getBooking = async () => {
-    const res = await dispatch(
-      getBookingById({ bookingId, token: user.token })
-    );
-    setBooking(res.payload);
-  };
-
   const handleCompletePaymentClick = () => {
     const totalPrice =
       booking.flightDetails.price + (booking.returnFlightDetails?.price || 0);
@@ -30,21 +23,26 @@ const BookingDetails = () => {
   };
 
   useEffect(() => {
+    const getBooking = async () => {
+      const res = await dispatch(
+        getBookingById({ bookingId, token: user.token })
+      );
+      setBooking(res.payload);
+    };
     getBooking();
-  }, [user?.id]);
+  }, [bookingId, dispatch, user.id, user.token]);
 
   return (
     <div className="bg-gray-100 min-h-[calc(100vh-75px)] py-10 flex flex-col items-center space-y-5">
       <div className="w-[50%] max-lg:w-[70%] max-md:w-[90%] flex justify-between">
         <div className="text-2xl font-bold">Booking Details</div>
         <div
-          className={`text-sm text-white self-center font-semibold w-max py-1 px-2 rounded-md ${
-            booking?.status === "InProcess"
-              ? "bg-[#F19E0C]"
-              : booking?.status === "Booked"
+          className={`text-sm text-white self-center font-semibold w-max py-1 px-2 rounded-md ${booking?.status === "InProcess"
+            ? "bg-[#F19E0C]"
+            : booking?.status === "Booked"
               ? "bg-[#008000]"
               : "bg-[#DF2128]"
-          }`}
+            }`}
         >
           Status: {booking?.status}
         </div>

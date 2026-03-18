@@ -20,7 +20,7 @@ const History = () => {
     return () => {
       dispatch(resetPage());
     };
-  }, [dispatch, user.id, user.token]);
+  }, [booking.page, dispatch, user.id, user.token]);
 
   useEffect(() => {
     if (booking.page > 1) {

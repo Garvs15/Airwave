@@ -1,5 +1,5 @@
 import gsap from "gsap";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 interface PassengerClassProps {
   setPassenger: (passenger: number) => void;
@@ -32,6 +32,21 @@ const PassengerClass: React.FC<PassengerClassProps> = ({
     }
   }, []);
 
+  const animateClose = useCallback(() => {
+    if (popupRef.current) {
+      gsap.to(popupRef.current, {
+        y: -20,
+        opacity: 0,
+        duration: 0.3,
+        ease: "power2.in",
+        onComplete: () => setPopup(false),
+      });
+    }
+    if (backdropRef.current) {
+      gsap.to(backdropRef.current, { opacity: 0, duration: 0.3 });
+    }
+  }, [setPopup]);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -46,22 +61,7 @@ const PassengerClass: React.FC<PassengerClassProps> = ({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
-
-  const animateClose = () => {
-    if (popupRef.current) {
-      gsap.to(popupRef.current, {
-        y: -20,
-        opacity: 0,
-        duration: 0.3,
-        ease: "power2.in",
-        onComplete: () => setPopup(false),
-      });
-    }
-    if (backdropRef.current) {
-      gsap.to(backdropRef.current, { opacity: 0, duration: 0.3 });
-    }
-  };
+  }, [animateClose]);
 
   const handleApply = () => {
     setPassenger(selectedPassenger);
@@ -82,11 +82,10 @@ const PassengerClass: React.FC<PassengerClassProps> = ({
           <div className="flex flex-wrap gap-2 border p-2 rounded-md justify-center">
             {Array.from({ length: 10 }, (_, i) => (
               <div
-                className={`px-4 py-2 rounded-md cursor-pointer transition duration-200 ${
-                  selectedPassenger === i + 1
-                    ? "bg-blue-600 text-white shadow-md"
-                    : "hover:bg-gray-100"
-                }`}
+                className={`px-4 py-2 rounded-md cursor-pointer transition duration-200 ${selectedPassenger === i + 1
+                  ? "bg-blue-600 text-white shadow-md"
+                  : "hover:bg-gray-100"
+                  }`}
                 key={i + 1}
                 onClick={() => setSelectedPassenger(i + 1)}
               >

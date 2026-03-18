@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { GiAirplaneDeparture } from "react-icons/gi";
 import { Airplane } from "../../redux/airports/airportSlice";
 import gsap from "gsap";
@@ -26,6 +26,17 @@ const CitySelectModal: React.FC<CitySelectModalProps> = ({
     setSearchTerm(e.target.value);
   };
 
+  const animateClose = useCallback(() => {
+    gsap.to(dropdownRef.current, {
+      y: -20,
+      opacity: 0,
+      duration: 0.3,
+      ease: "power2.in",
+      onComplete: () => setIsOpen(false),
+    });
+    gsap.to(backdropRef.current, { opacity: 0, duration: 0.3 });
+  }, [setIsOpen]);
+
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
@@ -37,7 +48,7 @@ const CitySelectModal: React.FC<CitySelectModalProps> = ({
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [animateClose]);
 
   useEffect(() => {
     gsap.fromTo(
@@ -52,16 +63,6 @@ const CitySelectModal: React.FC<CitySelectModalProps> = ({
     );
   }, []);
 
-  const animateClose = () => {
-    gsap.to(dropdownRef.current, {
-      y: -20,
-      opacity: 0,
-      duration: 0.3,
-      ease: "power2.in",
-      onComplete: () => setIsOpen(false),
-    });
-    gsap.to(backdropRef.current, { opacity: 0, duration: 0.3 });
-  };
 
   return (
     <div

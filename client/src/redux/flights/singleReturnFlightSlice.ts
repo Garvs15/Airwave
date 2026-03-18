@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Flight } from "./flightSlice";
-import { getFlight, getReturnFlight } from "./flightsAction";
+import { getReturnFlight } from "./flightsAction";
 
 const initialState: Flight = {
   id: 0,

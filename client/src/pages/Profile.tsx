@@ -47,6 +47,7 @@ const Profile = () => {
     .min(7, "Phone number must be at least 7 digits.")
     .max(15, "Phone number cannot exceed 15 digits.");
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const validateField = useCallback(
     debounce((field: string, value: string) => {
       if (field === "email") {
@@ -82,9 +83,11 @@ const Profile = () => {
         ).unwrap();
         setInitialData(profileData);
         Cookies.remove("token");
-        navigate("/verify-otp", {state: {
-          email: profileData.email
-        }});
+        navigate("/verify-otp", {
+          state: {
+            email: profileData.email
+          }
+        });
       } else {
         const res = await dispatch(
           updateUser({

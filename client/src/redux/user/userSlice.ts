@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getUser, login, signUp, updateUser, verifyOtp } from "./userAction";
-import toast from "react-hot-toast";
 
 interface User {
   id: number;

@@ -88,6 +88,7 @@ const VerifyOTP = () => {
     }, 1000);
 
     return () => clearInterval(cooldownInterval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [otpSent]);
 
   // GSAP Animation on mount
@@ -163,11 +164,10 @@ const VerifyOTP = () => {
                     type="button"
                     onClick={sendOtpToEmail}
                     disabled={resendCooldown > 0}
-                    className={`text-sm ${
-                      resendCooldown > 0
+                    className={`text-sm ${resendCooldown > 0
                         ? "text-gray-400 cursor-not-allowed"
                         : "text-blue-500 hover:text-blue-700"
-                    }`}
+                      }`}
                   >
                     {resendCooldown > 0
                       ? `Resend OTP in ${resendCooldown}s`

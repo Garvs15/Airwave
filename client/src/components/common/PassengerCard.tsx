@@ -1,6 +1,6 @@
 import { Select, TextInput } from "@mantine/core";
 import dayjs from "dayjs";
-import React, { useMemo, useState, useCallback } from "react";
+import React, { useMemo, useState } from "react";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import { useDispatch } from "react-redux";
@@ -43,8 +43,8 @@ const PassengerCard = ({
     .max(15, "Phone number cannot exceed 15 digits.");
 
   // Debounced validation
-  const validateField = useCallback(
-    debounce((field: string, value: string) => {
+  const validateField = useMemo(() => {
+    return debounce((field: string, value: string) => {
       if (field === "email") {
         const result = emailSchema.safeParse(value);
         setEmailError(result.success ? null : result.error.errors[0].message);
@@ -52,9 +52,8 @@ const PassengerCard = ({
         const result = phoneSchema.safeParse(value);
         setPhoneError(result.success ? null : result.error.errors[0].message);
       }
-    }, 300),
-    []
-  );
+    }, 300);
+  }, [emailSchema, phoneSchema]);
 
   const handleInputChange = (field: string, value: string) => {
     // Trigger validation

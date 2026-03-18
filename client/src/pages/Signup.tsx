@@ -36,6 +36,7 @@ const Signup: React.FC = () => {
   const emailSchema = z.string().email("Please enter a valid email address.");
   const passwordSchema = z.string().min(4, "Password must be at least 6 characters.");
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const validateField = useCallback(
     debounce((field: string, value: string) => {
       if (field === "email") {

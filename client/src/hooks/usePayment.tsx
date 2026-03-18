@@ -15,10 +15,10 @@ const usePayment = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user);
-  const singleFlight = useSelector((state: RootState) => state.singleFlight);
-  const singleReturnFlight = useSelector(
-    (state: RootState) => state.singleReturnFlight
-  );
+  // const singleFlight = useSelector((state: RootState) => state.singleFlight);
+  // const singleReturnFlight = useSelector(
+  //   (state: RootState) => state.singleReturnFlight
+  // );
 
   const processPayment = useCallback(
     async (
@@ -87,15 +87,7 @@ const usePayment = () => {
         dispatch(setLoading(false));
       }
     },
-    [
-      dispatch,
-      navigate,
-      singleFlight.price,
-      singleReturnFlight.price,
-      user.email,
-      user.id,
-      user.name,
-    ]
+    [dispatch, navigate, user.email, user.id, user.name, user.phone, user.token]
   );
 
   return { processPayment };
