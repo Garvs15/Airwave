@@ -6,20 +6,17 @@ interface MyComponentProps {
   children?: ReactNode;
 }
 
-const OpenRoute: React.FC<MyComponentProps>  = ({children}) => {
-
+const OpenRoute = ({ children }: MyComponentProps): JSX.Element => {
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = Cookies.get('token');
-    if(token){
-      navigate('/home')
+    if (token) {
+      navigate('/home');
     }
-  }, [])
+  }, [navigate]);
 
-  return (
-    children
-  )
-}
+  return <>{children}</>;
+};
 
 export default OpenRoute
