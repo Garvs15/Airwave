@@ -33,7 +33,7 @@ class PaymentRepository {
                 { status, payment_details },
                 { where: { payment_id }, transaction }
             );
-            console.log(`[PaymentRepository] Rows updated: ${rowsUpdated}`);
+            // console.log(`[PaymentRepository] Rows updated: ${rowsUpdated}`);
 
             // Invalidate cache if exists
             const cachedPayment = await redis.get(`payment_${payment_id}`);
